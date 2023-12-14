@@ -22,8 +22,8 @@ message RegisterResponse {
 }
 
 message LoginRequest{
-    string email = 1;
-    string phone_number = 2;
+    string identifier = 1;
+    string login = 2;
     string password = 3;
 }
 
