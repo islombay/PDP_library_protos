@@ -7,6 +7,16 @@ option go_package = "pdp_library.auth.v1;authv1";
 service Auth {
     rpc Register (RegisterRequest) returns (RegisterResponse);
     rpc Login (LoginRequest) returns (LoginResponse);
+    rpc IsValidToken (IsValidTokenRequest) returns (IsValidTokenResponse);
+}
+
+message IsValidTokenRequest {
+    string token = 1;
+}
+
+message IsValidTokenResponse {
+    int64 uid = 1;
+    string email = 2;
 }
 
 message RegisterRequest {
