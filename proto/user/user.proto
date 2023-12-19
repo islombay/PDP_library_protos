@@ -6,6 +6,16 @@ option go_package = "pdp_library.user.v1;userv1";
 
 service User{
     rpc NewUser(NewUserRequest) returns (NewUserResponse);
+    rpc IsUser(IsUserRequest) returns (IsUserResponse);
+}
+
+message IsUserRequest {
+    int64 id = 1;
+}
+
+message IsUserResponse {
+    int64 id = 1;
+    string email = 2;
 }
 
 message NewUserRequest {
