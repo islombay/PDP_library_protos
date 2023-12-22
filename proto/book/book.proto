@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package book;
+
+option go_package = "pdp_library.book.v1;bookv1";
+
+import "google/protobuf/timestamp.proto";
+
+service BookService {
+    rpc NewBook(NewBookRequest) returns (NewBookResponse);
+}
+
+message NewBookRequest{
+    string title = 1;
+    repeated string author = 2;
+    string language = 3;
+    google.protobuf.Timestamp published_date = 4;
+    bytes cover_page = 5;
+}
+
+message NewBookResponse{
+    Book book = 1;
+}
+
+message Book {
+    int64 id = 1;
+    string title = 2;
+    repeated string author = 3;
+    string language = 4;
+    google.protobuf.Timestamp published_date = 5;
+    bytes cover_page = 6;
+}
