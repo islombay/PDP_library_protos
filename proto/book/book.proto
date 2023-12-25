@@ -22,7 +22,7 @@ message NewBookResponse{
 }
 
 message Book {
-    int64 id = 1;
+    string id = 1;
     string title = 2;
     repeated string author = 3;
     string language = 4;
