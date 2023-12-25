@@ -14,8 +14,7 @@ message NewBookRequest{
     string title = 1;
     repeated string author = 2;
     string language = 3;
-    google.protobuf.Timestamp published_date = 4;
-    bytes cover_page = 5;
+    bytes cover_page = 4;
 }
 
 message NewBookResponse{
