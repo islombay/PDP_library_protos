@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	BookService_NewBook_FullMethodName    = "/book.BookService/NewBook"
 	BookService_GetBook_FullMethodName    = "/book.BookService/GetBook"
+	BookService_GetBooks_FullMethodName   = "/book.BookService/GetBooks"
 	BookService_DeleteBook_FullMethodName = "/book.BookService/DeleteBook"
 	BookService_EditBook_FullMethodName   = "/book.BookService/EditBook"
 )
@@ -31,6 +32,7 @@ const (
 type BookServiceClient interface {
 	NewBook(ctx context.Context, in *NewBookRequest, opts ...grpc.CallOption) (*NewBookResponse, error)
 	GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error)
+	GetBooks(ctx context.Context, in *GetBooksRequest, opts ...grpc.CallOption) (*GetBooksResponse, error)
 	DeleteBook(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error)
 	EditBook(ctx context.Context, in *EditBookRequest, opts ...grpc.CallOption) (*EditBookResponse, error)
 }
@@ -61,6 +63,15 @@ func (c *bookServiceClient) GetBook(ctx context.Context, in *GetBookRequest, opt
 	return out, nil
 }
 
+func (c *bookServiceClient) GetBooks(ctx context.Context, in *GetBooksRequest, opts ...grpc.CallOption) (*GetBooksResponse, error) {
+	out := new(GetBooksResponse)
+	err := c.cc.Invoke(ctx, BookService_GetBooks_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookServiceClient) DeleteBook(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error) {
 	out := new(DeleteBookResponse)
 	err := c.cc.Invoke(ctx, BookService_DeleteBook_FullMethodName, in, out, opts...)
@@ -85,6 +96,7 @@ func (c *bookServiceClient) EditBook(ctx context.Context, in *EditBookRequest, o
 type BookServiceServer interface {
 	NewBook(context.Context, *NewBookRequest) (*NewBookResponse, error)
 	GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error)
+	GetBooks(context.Context, *GetBooksRequest) (*GetBooksResponse, error)
 	DeleteBook(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error)
 	EditBook(context.Context, *EditBookRequest) (*EditBookResponse, error)
 	mustEmbedUnimplementedBookServiceServer()
@@ -99,6 +111,9 @@ func (UnimplementedBookServiceServer) NewBook(context.Context, *NewBookRequest) 
 }
 func (UnimplementedBookServiceServer) GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
+}
+func (UnimplementedBookServiceServer) GetBooks(context.Context, *GetBooksRequest) (*GetBooksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBooks not implemented")
 }
 func (UnimplementedBookServiceServer) DeleteBook(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBook not implemented")
@@ -155,6 +170,24 @@ func _BookService_GetBook_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookService_GetBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBooksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).GetBooks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookService_GetBooks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).GetBooks(ctx, req.(*GetBooksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BookService_DeleteBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteBookRequest)
 	if err := dec(in); err != nil {
@@ -205,6 +238,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBook",
 			Handler:    _BookService_GetBook_Handler,
+		},
+		{
+			MethodName: "GetBooks",
+			Handler:    _BookService_GetBooks_Handler,
 		},
 		{
 			MethodName: "DeleteBook",

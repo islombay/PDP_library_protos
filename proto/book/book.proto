@@ -47,16 +47,24 @@ message EditBookRequest {
     string title = 2;
     repeated string author = 3;
     string language = 4;
-    bytes cover_page = 5;
 }
 
 message EditBookResponse {
     Book book = 1;
 }
 
+message GetBooksRequest {
+
+}
+
+message GetBooksResponse {
+    repeated Book books = 1;
+}
+
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
     rpc GetBook(GetBookRequest) returns (GetBookResponse);
+    rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
     rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
     rpc EditBook(EditBookRequest) returns (EditBookResponse);
 }
