@@ -15,11 +15,6 @@ message Book {
     bytes cover_page = 6;
 }
 
-service BookService {
-    rpc NewBook(NewBookRequest) returns (NewBookResponse);
-    rpc GetBook(GetBookRequest) returns (GetBookResponse);
-}
-
 message NewBookRequest{
     string title = 1;
     repeated string author = 2;
@@ -27,7 +22,7 @@ message NewBookRequest{
     bytes cover_page = 4;
 }
 
-message NewBookResponse{
+message NewBookResponse {
     Book book = 1;
 }
 
@@ -37,4 +32,31 @@ message GetBookRequest {
 
 message GetBookResponse {
     Book book = 1;
+}
+
+message DeleteBookRequest {
+    string id = 1;
+}
+
+message DeleteBookResponse {
+    bool ok = 1;
+}
+
+message EditBookRequest {
+    string id = 1;
+    string title = 2;
+    repeated string author = 3;
+    string language = 4;
+    bytes cover_page = 5;
+}
+
+message EditBookResponse {
+    Book book = 1;
+}
+
+service BookService {
+    rpc NewBook(NewBookRequest) returns (NewBookResponse);
+    rpc GetBook(GetBookRequest) returns (GetBookResponse);
+    rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
+    rpc EditBook(EditBookRequest) returns (EditBookResponse);
 }
