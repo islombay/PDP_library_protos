@@ -20,6 +20,7 @@ message NewBookRequest{
     repeated string author = 2;
     string language = 3;
     bytes cover_page = 4;
+    string image_name = 5;
 }
 
 message NewBookResponse {
