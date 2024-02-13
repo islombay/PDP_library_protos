@@ -19,8 +19,15 @@ message NewBookRequest{
     string title = 1;
     repeated string author = 2;
     string language = 3;
-    bytes cover_page = 4;
-    string image_name = 5;
+}
+
+message ChangeCoverPageRequest{
+    string id = 1;
+    bytes cover_page = 2;
+}
+
+message ChangeCoverPageResponse{
+    Book book = 1;
 }
 
 message NewBookResponse {
@@ -54,9 +61,7 @@ message EditBookResponse {
     Book book = 1;
 }
 
-message GetBooksRequest {
-
-}
+message GetBooksRequest {}
 
 message GetBooksResponse {
     repeated Book books = 1;
@@ -68,4 +73,6 @@ service BookService {
     rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
     rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
     rpc EditBook(EditBookRequest) returns (EditBookResponse);
+
+    rpc ChangeCoverPage(ChangeCoverPageRequest) returns (ChangeCoverPageResponse);
 }
