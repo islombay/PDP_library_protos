@@ -24,6 +24,7 @@ message NewBookRequest{
 message ChangeCoverPageRequest{
     string id = 1;
     bytes cover_page = 2;
+    string image_name = 3;
 }
 
 message ChangeCoverPageResponse{
