@@ -69,8 +69,10 @@ message GetBooksResponse {
 
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
+
     rpc GetBook(GetBookRequest) returns (GetBookResponse);
     rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
+    
     rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
     rpc EditBook(EditBookRequest) returns (EditBookResponse);
 
