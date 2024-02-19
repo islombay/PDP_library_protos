@@ -25,6 +25,7 @@ const (
 	BookService_DeleteBook_FullMethodName      = "/book.BookService/DeleteBook"
 	BookService_EditBook_FullMethodName        = "/book.BookService/EditBook"
 	BookService_ChangeCoverPage_FullMethodName = "/book.BookService/ChangeCoverPage"
+	BookService_AddBookQuantity_FullMethodName = "/book.BookService/AddBookQuantity"
 )
 
 // BookServiceClient is the client API for BookService service.
@@ -37,6 +38,7 @@ type BookServiceClient interface {
 	DeleteBook(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error)
 	EditBook(ctx context.Context, in *EditBookRequest, opts ...grpc.CallOption) (*EditBookResponse, error)
 	ChangeCoverPage(ctx context.Context, in *ChangeCoverPageRequest, opts ...grpc.CallOption) (*ChangeCoverPageResponse, error)
+	AddBookQuantity(ctx context.Context, in *AddBookQuantityRequest, opts ...grpc.CallOption) (*AddBookQuantityResponse, error)
 }
 
 type bookServiceClient struct {
@@ -101,6 +103,15 @@ func (c *bookServiceClient) ChangeCoverPage(ctx context.Context, in *ChangeCover
 	return out, nil
 }
 
+func (c *bookServiceClient) AddBookQuantity(ctx context.Context, in *AddBookQuantityRequest, opts ...grpc.CallOption) (*AddBookQuantityResponse, error) {
+	out := new(AddBookQuantityResponse)
+	err := c.cc.Invoke(ctx, BookService_AddBookQuantity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookServiceServer is the server API for BookService service.
 // All implementations must embed UnimplementedBookServiceServer
 // for forward compatibility
@@ -111,6 +122,7 @@ type BookServiceServer interface {
 	DeleteBook(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error)
 	EditBook(context.Context, *EditBookRequest) (*EditBookResponse, error)
 	ChangeCoverPage(context.Context, *ChangeCoverPageRequest) (*ChangeCoverPageResponse, error)
+	AddBookQuantity(context.Context, *AddBookQuantityRequest) (*AddBookQuantityResponse, error)
 	mustEmbedUnimplementedBookServiceServer()
 }
 
@@ -135,6 +147,9 @@ func (UnimplementedBookServiceServer) EditBook(context.Context, *EditBookRequest
 }
 func (UnimplementedBookServiceServer) ChangeCoverPage(context.Context, *ChangeCoverPageRequest) (*ChangeCoverPageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeCoverPage not implemented")
+}
+func (UnimplementedBookServiceServer) AddBookQuantity(context.Context, *AddBookQuantityRequest) (*AddBookQuantityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddBookQuantity not implemented")
 }
 func (UnimplementedBookServiceServer) mustEmbedUnimplementedBookServiceServer() {}
 
@@ -257,6 +272,24 @@ func _BookService_ChangeCoverPage_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookService_AddBookQuantity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddBookQuantityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).AddBookQuantity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookService_AddBookQuantity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).AddBookQuantity(ctx, req.(*AddBookQuantityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookService_ServiceDesc is the grpc.ServiceDesc for BookService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +320,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeCoverPage",
 			Handler:    _BookService_ChangeCoverPage_Handler,
+		},
+		{
+			MethodName: "AddBookQuantity",
+			Handler:    _BookService_AddBookQuantity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
