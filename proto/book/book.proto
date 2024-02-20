@@ -79,6 +79,15 @@ message AddBookQuantityResponse {
     int64 quantity = 2;
 }
 
+message GetBookQuantityRequest {
+    string id = 1;
+}
+
+message GetBookQuantityResponse {
+    string id = 1;
+    int64 quantity = 2;
+}
+
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
 
@@ -91,4 +100,5 @@ service BookService {
     rpc ChangeCoverPage(ChangeCoverPageRequest) returns (ChangeCoverPageResponse);
 
     rpc AddBookQuantity(AddBookQuantityRequest) returns (AddBookQuantityResponse);
+    rpc GetBookQuantity(GetBookQuantityRequest) returns (GetBookQuantityResponse);
 }
