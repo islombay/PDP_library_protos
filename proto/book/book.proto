@@ -15,6 +15,16 @@ message Book {
     bytes cover_page = 6;
 }
 
+message BookOrder {
+    string id = 1;
+    string book_id = 2;
+    string user_email = 3;
+    google.protobuf.Timestamp order_date = 4;
+    google.protobuf.Timestamp order_end_date = 5;
+    string comment = 6;
+    int64 book_quantity = 7;
+}
+
 message NewBookRequest{
     string title = 1;
     repeated string author = 2;
@@ -99,6 +109,19 @@ message RemoveBookQuantityResponse {
     int64 quantity = 2;
 }
 
+
+message AddBookOrderRequest {
+    string book_id = 1;
+    string user_email = 2;
+    google.protobuf.Timestamp order_end_date = 3;
+    string comment = 4;
+    int64 book_quantity = 5;
+}
+
+message AddBookOrderResponse {
+    BookOrder order = 1;
+}
+
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
 
@@ -113,4 +136,6 @@ service BookService {
     rpc AddBookQuantity(AddBookQuantityRequest) returns (AddBookQuantityResponse);
     rpc GetBookQuantity(GetBookQuantityRequest) returns (GetBookQuantityResponse);
     rpc RemoveBookQuantity(RemoveBookQuantityRequest) returns (RemoveBookQuantityResponse);
+
+    rpc AddBookOrder(AddBookOrderRequest) returns (AddBookOrderResponse);
 }
