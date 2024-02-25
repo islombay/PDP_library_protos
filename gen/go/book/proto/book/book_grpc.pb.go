@@ -28,6 +28,7 @@ const (
 	BookService_AddBookQuantity_FullMethodName    = "/book.BookService/AddBookQuantity"
 	BookService_GetBookQuantity_FullMethodName    = "/book.BookService/GetBookQuantity"
 	BookService_RemoveBookQuantity_FullMethodName = "/book.BookService/RemoveBookQuantity"
+	BookService_AddBookOrder_FullMethodName       = "/book.BookService/AddBookOrder"
 )
 
 // BookServiceClient is the client API for BookService service.
@@ -43,6 +44,7 @@ type BookServiceClient interface {
 	AddBookQuantity(ctx context.Context, in *AddBookQuantityRequest, opts ...grpc.CallOption) (*AddBookQuantityResponse, error)
 	GetBookQuantity(ctx context.Context, in *GetBookQuantityRequest, opts ...grpc.CallOption) (*GetBookQuantityResponse, error)
 	RemoveBookQuantity(ctx context.Context, in *RemoveBookQuantityRequest, opts ...grpc.CallOption) (*RemoveBookQuantityResponse, error)
+	AddBookOrder(ctx context.Context, in *AddBookOrderRequest, opts ...grpc.CallOption) (*AddBookOrderResponse, error)
 }
 
 type bookServiceClient struct {
@@ -134,6 +136,15 @@ func (c *bookServiceClient) RemoveBookQuantity(ctx context.Context, in *RemoveBo
 	return out, nil
 }
 
+func (c *bookServiceClient) AddBookOrder(ctx context.Context, in *AddBookOrderRequest, opts ...grpc.CallOption) (*AddBookOrderResponse, error) {
+	out := new(AddBookOrderResponse)
+	err := c.cc.Invoke(ctx, BookService_AddBookOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookServiceServer is the server API for BookService service.
 // All implementations must embed UnimplementedBookServiceServer
 // for forward compatibility
@@ -147,6 +158,7 @@ type BookServiceServer interface {
 	AddBookQuantity(context.Context, *AddBookQuantityRequest) (*AddBookQuantityResponse, error)
 	GetBookQuantity(context.Context, *GetBookQuantityRequest) (*GetBookQuantityResponse, error)
 	RemoveBookQuantity(context.Context, *RemoveBookQuantityRequest) (*RemoveBookQuantityResponse, error)
+	AddBookOrder(context.Context, *AddBookOrderRequest) (*AddBookOrderResponse, error)
 	mustEmbedUnimplementedBookServiceServer()
 }
 
@@ -180,6 +192,9 @@ func (UnimplementedBookServiceServer) GetBookQuantity(context.Context, *GetBookQ
 }
 func (UnimplementedBookServiceServer) RemoveBookQuantity(context.Context, *RemoveBookQuantityRequest) (*RemoveBookQuantityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveBookQuantity not implemented")
+}
+func (UnimplementedBookServiceServer) AddBookOrder(context.Context, *AddBookOrderRequest) (*AddBookOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddBookOrder not implemented")
 }
 func (UnimplementedBookServiceServer) mustEmbedUnimplementedBookServiceServer() {}
 
@@ -356,6 +371,24 @@ func _BookService_RemoveBookQuantity_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookService_AddBookOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddBookOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).AddBookOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookService_AddBookOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).AddBookOrder(ctx, req.(*AddBookOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookService_ServiceDesc is the grpc.ServiceDesc for BookService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -398,6 +431,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveBookQuantity",
 			Handler:    _BookService_RemoveBookQuantity_Handler,
+		},
+		{
+			MethodName: "AddBookOrder",
+			Handler:    _BookService_AddBookOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
