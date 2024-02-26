@@ -23,6 +23,7 @@ message BookOrder {
     google.protobuf.Timestamp order_end_date = 5;
     string comment = 6;
     int64 book_quantity = 7;
+    bool finished = 8;
 }
 
 message NewBookRequest{
