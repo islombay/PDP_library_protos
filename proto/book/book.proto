@@ -136,6 +136,6 @@ service BookService {
     rpc AddBookQuantity(AddBookQuantityRequest) returns (AddBookQuantityResponse);
     rpc GetBookQuantity(GetBookQuantityRequest) returns (GetBookQuantityResponse);
     rpc RemoveBookQuantity(RemoveBookQuantityRequest) returns (RemoveBookQuantityResponse);
-
+    
     rpc AddBookOrder(AddBookOrderRequest) returns (AddBookOrderResponse);
 }
