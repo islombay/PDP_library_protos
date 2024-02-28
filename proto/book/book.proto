@@ -26,7 +26,7 @@ message BookOrder {
     bool finished = 8;
 }
 
-message NewBookRequest{
+message NewBookRequest {
     string title = 1;
     repeated string author = 2;
     string language = 3;
@@ -123,6 +123,13 @@ message AddBookOrderResponse {
     BookOrder order = 1;
 }
 
+message CancelBookOrderRequest {
+    string id = 1;
+    string comment = 2;
+}
+
+message CancelBookOrderResponse {}
+
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
 
@@ -137,7 +144,7 @@ service BookService {
     rpc AddBookQuantity(AddBookQuantityRequest) returns (AddBookQuantityResponse);
     rpc GetBookQuantity(GetBookQuantityRequest) returns (GetBookQuantityResponse);
     rpc RemoveBookQuantity(RemoveBookQuantityRequest) returns (RemoveBookQuantityResponse);
-    
-    
+
     rpc AddBookOrder(AddBookOrderRequest) returns (AddBookOrderResponse);
+    rpc CancelBookOrder(CancelBookOrderRequest) returns (CancelBookOrderResponse);
 }
