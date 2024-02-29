@@ -30,6 +30,7 @@ const (
 	BookService_RemoveBookQuantity_FullMethodName = "/book.BookService/RemoveBookQuantity"
 	BookService_AddBookOrder_FullMethodName       = "/book.BookService/AddBookOrder"
 	BookService_CancelBookOrder_FullMethodName    = "/book.BookService/CancelBookOrder"
+	BookService_FinishBookOrder_FullMethodName    = "/book.BookService/FinishBookOrder"
 )
 
 // BookServiceClient is the client API for BookService service.
@@ -47,6 +48,7 @@ type BookServiceClient interface {
 	RemoveBookQuantity(ctx context.Context, in *RemoveBookQuantityRequest, opts ...grpc.CallOption) (*RemoveBookQuantityResponse, error)
 	AddBookOrder(ctx context.Context, in *AddBookOrderRequest, opts ...grpc.CallOption) (*AddBookOrderResponse, error)
 	CancelBookOrder(ctx context.Context, in *CancelBookOrderRequest, opts ...grpc.CallOption) (*CancelBookOrderResponse, error)
+	FinishBookOrder(ctx context.Context, in *FinishBookOrderRequest, opts ...grpc.CallOption) (*FinishBookOrderResponse, error)
 }
 
 type bookServiceClient struct {
@@ -156,6 +158,15 @@ func (c *bookServiceClient) CancelBookOrder(ctx context.Context, in *CancelBookO
 	return out, nil
 }
 
+func (c *bookServiceClient) FinishBookOrder(ctx context.Context, in *FinishBookOrderRequest, opts ...grpc.CallOption) (*FinishBookOrderResponse, error) {
+	out := new(FinishBookOrderResponse)
+	err := c.cc.Invoke(ctx, BookService_FinishBookOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookServiceServer is the server API for BookService service.
 // All implementations must embed UnimplementedBookServiceServer
 // for forward compatibility
@@ -171,6 +182,7 @@ type BookServiceServer interface {
 	RemoveBookQuantity(context.Context, *RemoveBookQuantityRequest) (*RemoveBookQuantityResponse, error)
 	AddBookOrder(context.Context, *AddBookOrderRequest) (*AddBookOrderResponse, error)
 	CancelBookOrder(context.Context, *CancelBookOrderRequest) (*CancelBookOrderResponse, error)
+	FinishBookOrder(context.Context, *FinishBookOrderRequest) (*FinishBookOrderResponse, error)
 	mustEmbedUnimplementedBookServiceServer()
 }
 
@@ -210,6 +222,9 @@ func (UnimplementedBookServiceServer) AddBookOrder(context.Context, *AddBookOrde
 }
 func (UnimplementedBookServiceServer) CancelBookOrder(context.Context, *CancelBookOrderRequest) (*CancelBookOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelBookOrder not implemented")
+}
+func (UnimplementedBookServiceServer) FinishBookOrder(context.Context, *FinishBookOrderRequest) (*FinishBookOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FinishBookOrder not implemented")
 }
 func (UnimplementedBookServiceServer) mustEmbedUnimplementedBookServiceServer() {}
 
@@ -422,6 +437,24 @@ func _BookService_CancelBookOrder_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookService_FinishBookOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinishBookOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).FinishBookOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookService_FinishBookOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).FinishBookOrder(ctx, req.(*FinishBookOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookService_ServiceDesc is the grpc.ServiceDesc for BookService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -472,6 +505,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelBookOrder",
 			Handler:    _BookService_CancelBookOrder_Handler,
+		},
+		{
+			MethodName: "FinishBookOrder",
+			Handler:    _BookService_FinishBookOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

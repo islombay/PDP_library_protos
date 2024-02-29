@@ -130,6 +130,12 @@ message CancelBookOrderRequest {
 
 message CancelBookOrderResponse {}
 
+message FinishBookOrderRequest {
+    string id = 1;
+}
+
+message FinishBookOrderResponse {}
+
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
 
@@ -147,4 +153,5 @@ service BookService {
 
     rpc AddBookOrder(AddBookOrderRequest) returns (AddBookOrderResponse);
     rpc CancelBookOrder(CancelBookOrderRequest) returns (CancelBookOrderResponse);
+    rpc FinishBookOrder(FinishBookOrderRequest) returns (FinishBookOrderResponse);
 }
