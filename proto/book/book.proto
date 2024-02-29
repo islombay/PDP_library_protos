@@ -24,6 +24,7 @@ message BookOrder {
     string comment = 6;
     int64 book_quantity = 7;
     bool finished = 8;
+    google.protobuf.Timestamp finished_date = 9;
 }
 
 message NewBookRequest {
@@ -136,6 +137,14 @@ message FinishBookOrderRequest {
 
 message FinishBookOrderResponse {}
 
+message GetBookOrderRequest {
+    string id = 1;
+}
+
+message GetBookOrderResponse {
+    BookOrder order = 1;
+}
+
 service BookService {
     rpc NewBook(NewBookRequest) returns (NewBookResponse);
 
@@ -154,4 +163,5 @@ service BookService {
     rpc AddBookOrder(AddBookOrderRequest) returns (AddBookOrderResponse);
     rpc CancelBookOrder(CancelBookOrderRequest) returns (CancelBookOrderResponse);
     rpc FinishBookOrder(FinishBookOrderRequest) returns (FinishBookOrderResponse);
+    rpc GetBookOrder(GetBookOrderRequest) returns (GetBookOrderResponse);
 }

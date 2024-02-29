@@ -31,6 +31,7 @@ const (
 	BookService_AddBookOrder_FullMethodName       = "/book.BookService/AddBookOrder"
 	BookService_CancelBookOrder_FullMethodName    = "/book.BookService/CancelBookOrder"
 	BookService_FinishBookOrder_FullMethodName    = "/book.BookService/FinishBookOrder"
+	BookService_GetBookOrder_FullMethodName       = "/book.BookService/GetBookOrder"
 )
 
 // BookServiceClient is the client API for BookService service.
@@ -49,6 +50,7 @@ type BookServiceClient interface {
 	AddBookOrder(ctx context.Context, in *AddBookOrderRequest, opts ...grpc.CallOption) (*AddBookOrderResponse, error)
 	CancelBookOrder(ctx context.Context, in *CancelBookOrderRequest, opts ...grpc.CallOption) (*CancelBookOrderResponse, error)
 	FinishBookOrder(ctx context.Context, in *FinishBookOrderRequest, opts ...grpc.CallOption) (*FinishBookOrderResponse, error)
+	GetBookOrder(ctx context.Context, in *GetBookOrderRequest, opts ...grpc.CallOption) (*GetBookOrderResponse, error)
 }
 
 type bookServiceClient struct {
@@ -167,6 +169,15 @@ func (c *bookServiceClient) FinishBookOrder(ctx context.Context, in *FinishBookO
 	return out, nil
 }
 
+func (c *bookServiceClient) GetBookOrder(ctx context.Context, in *GetBookOrderRequest, opts ...grpc.CallOption) (*GetBookOrderResponse, error) {
+	out := new(GetBookOrderResponse)
+	err := c.cc.Invoke(ctx, BookService_GetBookOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookServiceServer is the server API for BookService service.
 // All implementations must embed UnimplementedBookServiceServer
 // for forward compatibility
@@ -183,6 +194,7 @@ type BookServiceServer interface {
 	AddBookOrder(context.Context, *AddBookOrderRequest) (*AddBookOrderResponse, error)
 	CancelBookOrder(context.Context, *CancelBookOrderRequest) (*CancelBookOrderResponse, error)
 	FinishBookOrder(context.Context, *FinishBookOrderRequest) (*FinishBookOrderResponse, error)
+	GetBookOrder(context.Context, *GetBookOrderRequest) (*GetBookOrderResponse, error)
 	mustEmbedUnimplementedBookServiceServer()
 }
 
@@ -225,6 +237,9 @@ func (UnimplementedBookServiceServer) CancelBookOrder(context.Context, *CancelBo
 }
 func (UnimplementedBookServiceServer) FinishBookOrder(context.Context, *FinishBookOrderRequest) (*FinishBookOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FinishBookOrder not implemented")
+}
+func (UnimplementedBookServiceServer) GetBookOrder(context.Context, *GetBookOrderRequest) (*GetBookOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBookOrder not implemented")
 }
 func (UnimplementedBookServiceServer) mustEmbedUnimplementedBookServiceServer() {}
 
@@ -455,6 +470,24 @@ func _BookService_FinishBookOrder_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookService_GetBookOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBookOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).GetBookOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookService_GetBookOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).GetBookOrder(ctx, req.(*GetBookOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookService_ServiceDesc is the grpc.ServiceDesc for BookService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -509,6 +542,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FinishBookOrder",
 			Handler:    _BookService_FinishBookOrder_Handler,
+		},
+		{
+			MethodName: "GetBookOrder",
+			Handler:    _BookService_GetBookOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
